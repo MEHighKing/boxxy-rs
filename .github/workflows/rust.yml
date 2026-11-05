@@ -30,4 +30,4 @@ jobs:
       - name: Upload binary to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: target/release/boxxy-rs
+          files: target/release/boxxy
