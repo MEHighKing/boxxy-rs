@@ -1,0 +1,19 @@
+[package]
+name = "boxxy"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.88"
+description = "A minimal branded terminal frame around an embedded shell"
+license = "MIT"
+publish = false
+
+[dependencies]
+crossterm = "0.28"
+portable-pty = "0.9"
+ratatui = "0.29"
+toml = "0.8"
+unicode-width = "0.1"
+vt100 = "0.15.2"
+
+[dev-dependencies]
+portable-pty = "0.9"
