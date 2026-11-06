@@ -224,6 +224,8 @@ fn ctrl_byte(ch: char) -> Option<u8> {
         'a'..='z' => Some(ch as u8 - b'a' + 1),
         'A'..='Z' => Some((ch as u8).to_ascii_lowercase() - b'a' + 1),
         ' ' | '@' => Some(0),
+        // Crossterm decodes 0x1c..=0x1f as Ctrl+4 through Ctrl+7.
+        '4'..='7' => Some(ch as u8 - b'4' + 0x1c),
         '[' => Some(0x1b),
         '\\' => Some(0x1c),
         ']' => Some(0x1d),
@@ -353,6 +355,16 @@ mod tests {
             encode_key(&key(KeyCode::Backspace, KeyModifiers::NONE), false).unwrap(),
             vec![0x7f]
         );
+    }
+
+    #[test]
+    fn control_digits_round_trip_crossterm_control_bytes() {
+        for (digit, byte) in [('4', 0x1c), ('5', 0x1d), ('6', 0x1e), ('7', 0x1f)] {
+            assert_eq!(
+                encode_key(&key(KeyCode::Char(digit), KeyModifiers::CONTROL), false).unwrap(),
+                vec![byte]
+            );
+        }
     }
 
     #[test]
